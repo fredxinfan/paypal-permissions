@@ -43,11 +43,12 @@ module Paypal::Permissions
     }
 
     # Credentials: UserID, Password, Signature, Application ID
-    def initialize(userid, password, signature, application_id, mode = :production)
+    def initialize(userid, password, signature, ssl_cert, application_id, mode = :production)
       raise "Mode must be :sandbox or :production" unless [:sandbox, :production].include? mode
       @userid = userid
       @password = password
       @signature = signature
+      @ssl_cert = ssl_cert
       @application_id = application_id
       @mode = mode
     end
@@ -129,6 +130,11 @@ module Paypal::Permissions
         http = Net::HTTP.new(endpoint.host, endpoint.port)
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE if mode == :sandbox
+        if @ssl_cert
+          cert = File.read(PayPal::Recurring.ssl_cert)
+          http.cert = OpenSSL::X509::Certificate.new(cert)
+          http.key = OpenSSL::PKey::RSA.new(cert)
+        end
         response = http.post(endpoint.request_uri, data, headers)
         code = response.code
 
