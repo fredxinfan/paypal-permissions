@@ -50,7 +50,7 @@ module Paypal
         raise "Mode must be :sandbox or :production" unless [:sandbox, :production].include? mode
         @userid = userid
         @password = password
-        @signature = signature
+        @signature = signature ? signature : ""
         @ssl_cert = ssl_cert
         @application_id = application_id
         @mode = mode
