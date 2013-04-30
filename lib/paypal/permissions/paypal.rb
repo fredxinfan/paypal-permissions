@@ -42,6 +42,8 @@ module Paypal
         :exception_processing_report => 'EXCEPTION_PROCESSING_REPORT',
         :account_management_permission => 'ACCOUNT_MANAGEMENT_PERMISSION',
       }
+      
+      CA_FILE = File.dirname(__FILE__) + "/cacert.pem"
 
       # Credentials: UserID, Password, Signature, Application ID
       def initialize(userid, password, signature, ssl_cert, application_id, mode = :production)
@@ -130,7 +132,9 @@ module Paypal
         timeout(30) do
           http = Net::HTTP.new(endpoint.host, endpoint.port)
           http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_PEER
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE if mode == :sandbox
+          http.ca_file = CA_FILE
           if @ssl_cert
             cert = File.read(@ssl_cert)
             http.cert = OpenSSL::X509::Certificate.new(cert)
