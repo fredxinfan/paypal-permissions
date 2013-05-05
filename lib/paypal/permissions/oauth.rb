@@ -11,14 +11,14 @@ module Paypal
       OAUTH_SIGNATURE_METHOD    = 'HMAC-SHA1'
 
       # Create the X-PP-AUTHORIZATION header
-      def generate_signature(token, token_secret, http_method, endpoint)
+      def generate_signature(userid, password, token, token_secret, http_method, endpoint)
         raise "Invalid HTTP Method. Valid values: GET, POST, DELETE, UPDATE." unless ['GET','POST','DELETE','UPDATE'].include? http_method
 
         timestamp = Time.now.to_i.to_s
-        signature_key = "#{@password}&#{oauth_escape(token_secret)}"
+        signature_key = "#{password}&#{oauth_escape(token_secret)}"
 
         oauth_params = {
-          'oauth_consumer_key'      => @userid,
+          'oauth_consumer_key'      => userid,
           'oauth_signature_method'  => OAUTH_SIGNATURE_METHOD,
           'oauth_timestamp'         => timestamp,
           'oauth_token'             => token,

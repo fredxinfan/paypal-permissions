@@ -51,7 +51,7 @@ module Paypal
         @userid = userid
         @password = password
         @signature = signature ? signature : ""
-        @ssl_cert = ssl_cert
+        @ssl_cert = ssl_cert ? ssl_cert : ""
         @application_id = application_id
         @mode = mode
       end

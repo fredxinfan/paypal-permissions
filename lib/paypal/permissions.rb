@@ -1,6 +1,6 @@
-require './lib/paypal/permissions/version'
-require './lib/paypal/permissions/fault_message'
-require './lib/paypal/permissions/oauth'
-require './lib/paypal/permissions/paypal'
+require 'paypal/permissions/version'
+require 'paypal/permissions/fault_message'
+require 'paypal/permissions/oauth'
+require 'paypal/permissions/paypal'
 
 
